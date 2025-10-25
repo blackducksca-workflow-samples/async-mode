@@ -1,4 +1,4 @@
-name: Async Mode
+name: Black Duck SCA scan with Async Mode
                                                                                                                                                                                                                                          
 on:
   push:
@@ -10,10 +10,25 @@ jobs:
   blackduck-scan:
     runs-on: [mac-arm-sh]
                                                                                                                                                                                                                                          
+    defaults:
+      run:
+        working-directory: ${{ github.workspace }}/nodejs-npm
+
     steps:
-    
     - name: Checkout Source
       uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'  # Specify Node version
+   
+    - name: Install dependencies
+      run: npm install  
+
+    - name: Build Project
+      run: |
+        npm rebuild
                                                                                                                                                                                                                                          
     - name: Black Duck Sca Scan with Async mode
       uses: blackduck-inc/black-duck-security-scan@v2
